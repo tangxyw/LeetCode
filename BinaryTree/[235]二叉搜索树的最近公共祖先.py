@@ -2,7 +2,7 @@ from CreateTree import TreeNode
 
 
 class Solution:
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+    def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
         res = root
         while True:
             if p.val < res.val and q.val < res.val:  # p和q的val都比当前节点val小, 下一步在当前节点左子树中寻找
