@@ -12,7 +12,7 @@ class Solution:
         """判断以Node_inA为根节点的子树是否包含结构B"""
         if not B:  # B为空表示递归到B底部了没找到不一样的, 返回True
             return True
-        if not Node_inA:  # A为空表示A到底了, 返回False
+        if not Node_inA:  # B不为空A为空表示A到底了, 返回False
             return False
         # 当Node_inA和B的节点值相等 且 Node_inA的左子树包含B的左子树结构 且 Node_inA的右子树包含B的右子树结构 → 以Node_inA为根节点的子树是否包含结构B
         return Node_inA.val == B.val and self.isSub(Node_inA.left, B.left) and self.isSub(Node_inA.right, B.right)
