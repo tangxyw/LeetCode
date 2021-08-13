@@ -19,7 +19,7 @@ class Solution:
         return self.mergeTwoLists(l1, l2)
 
     def findMiddleNode(self, head: ListNode) -> ListNode:
-        """找到链表的中间结点, 奇数个节点返回正中间节点, 偶数个节点返回中间靠左节点, 参考[876]题"""
+        """找到链表的中间结点, 奇数个节点返回正中间节点, 偶数个节点返回中间靠右节点, 参考[876]题"""
         if not head or not head.next:  # 链表为空或只有1个节点
             return head
         # 双指针
