@@ -24,7 +24,7 @@ class Solution:
             return head
         # 双指针
         slow = head
-        fast = head.next.next
+        fast = head
         while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
