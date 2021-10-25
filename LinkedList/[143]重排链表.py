@@ -28,7 +28,7 @@ class Solution:
                 return out_tail
 
             # 递归内部
-            tail = reorderListHelper(head.next, len - 2)  # tail为本层递归尾部节点, 由下层递归返回值得到
+            tail = reorderListHelper(head.next, length - 2)  # tail为本层递归尾部节点, 由下层递归返回值得到
             out_tail = tail.next  # 本层递归尾部节点的next, 需要最后返回给上层递归
             sub_head = head.next  # 下层递归的头结点
             head.next = tail  # 本层递归的头结点的next指向本层递归的尾结点
