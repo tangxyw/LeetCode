@@ -10,9 +10,9 @@ class Solution:
         def preorder(head: ListNode):
             if not head:  # base case, 到了末尾
                 return
-                # 递归下一个节点
+            # 递归下一个节点
             preorder(head.next)
             self.res.append(head.val)
 
-        dfs(head)
+        preorder(head)
         return self.res
