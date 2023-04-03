@@ -3,59 +3,39 @@ from typing import List
 
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
-        # 深度优先遍历+剪枝
-        def dfs(pre_word_coords, index, track):
+        m, n = len(board), len(board[0])
+        used = [[False for _ in range(n)] for _ in range(m)]
+
+        def dfs(x, y, index):
             """
-                pre_word_coords: 路径中前面字母的坐标集合
-                index: 需要寻找的letter在word中的索引
-                track: 当前路径
+                x, y: board中的坐标
+                index: word的索引, 当前dfs寻找的目标
+
+                return: 能找到返回True, 否则为False
             """
-            if len(track) == len(word):
-                self.res = True
-                return
+            # 当前坐标不是要找的字符
+            if board[x][y] != word[index]:
+                return False
+            # 找到目标单词路径
+            if index == len(word) - 1:
+                return True
 
-            if not pre_word_coords:  # 第一个letter
-                coordinates = findLetterXY(board, word[index])
-            else:  # 在pre_word_x, pre_word_y上下左右范围内找下一个letter的坐标
-                coordinates = findNextLetter(board, pre_word_coords, word[index])
+            # 当前位置字符标为已使用, 避免递归时再次搜索到
+            used[x][y] = True
+            # 向四个方向递归
+            for delta_x, delta_y in [[0, 1], [0, -1], [1, 0], [-1, 0]]:
+                nx, ny = x + delta_x, y + delta_y
+                # 坐标合法 and 当前位置字符之前未被使用 and 下层递归结果为真
+                # 这里用到了截断判断的技巧, 使得非法的坐标不会作为dfs的参数
+                if 0 <= nx < m and 0 <= ny < n and not used[nx][ny] and dfs(nx, ny, index + 1):
+                    return True
+            # 一定记住回溯
+            used[x][y] = False
 
-            if not coordinates:  # 没有候选集, 剪枝
-                return
+        for i in range(m):
+            for j in range(n):
+                if dfs(i, j, 0):
+                    return True
+        return False
 
-            for coord in coordinates:
-                track.append(word[index])
-                dfs(pre_word_coords + [coord], index + 1, track)  # 向下一个letter递归
-                track.pop()  # 回溯
 
-        def findLetterXY(board: List[List[str]], letter: str):
-            """在board中寻找letter, 返回letter的坐标(可能多个, 可能为空)"""
-            res = []
-            for i, line in enumerate(board):
-                for j, s in enumerate(line):
-                    if s == letter:
-                        res.append((i, j))
-            return res
-
-        def findNextLetter(board: List[List[str]], pre_word_coords: List, letter: str):
-            """在board中的pre_word_coords[-1]周围寻找letter, 返回letter的合法坐标(可能多个, 可能为空), 合法坐标表示坐标不能越界, 也不能是路径中前面字母的坐标"""
-            res = []
-            last_coords_x, last_coords_y = pre_word_coords[-1]
-            x_max = len(board) - 1
-            y_max = len(board[0]) - 1
-            if last_coords_x + 1 <= x_max and board[last_coords_x + 1][last_coords_y] == letter and (
-                    last_coords_x + 1, last_coords_y) not in pre_word_coords[:-1]:
-                res.append((last_coords_x + 1, last_coords_y))
-            if last_coords_x - 1 >= 0 and board[last_coords_x - 1][last_coords_y] == letter and (
-                    last_coords_x - 1, last_coords_y) not in pre_word_coords[:-1]:
-                res.append((last_coords_x - 1, last_coords_y))
-            if last_coords_y + 1 <= y_max and board[last_coords_x][last_coords_y + 1] == letter and (
-                    last_coords_x, last_coords_y + 1) not in pre_word_coords[:-1]:
-                res.append((last_coords_x, last_coords_y + 1))
-            if last_coords_y - 1 >= 0 and board[last_coords_x][last_coords_y - 1] == letter and (
-                    last_coords_x, last_coords_y - 1) not in pre_word_coords[:-1]:
-                res.append((last_coords_x, last_coords_y - 1))
-            return res
-
-        self.res = False
-        dfs([], 0, [])
-        return self.res
