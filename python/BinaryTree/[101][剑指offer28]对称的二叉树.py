@@ -9,7 +9,7 @@ class Solution:
             if not left and not right:
                 return True
             # 对称位置一个为空另一个不为空
-            if (not left and right) or (not right and left):
+            if not left or not right:
                 return False
             # 对称位置节点值不相等
             if left.val != right.val:
