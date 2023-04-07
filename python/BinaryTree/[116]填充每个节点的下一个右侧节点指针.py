@@ -9,22 +9,15 @@ class Node:
 """
 
 class Solution:
-    def connect(self, root: 'Node') -> 'Node':
-    # 层序遍历, 完美二叉树每一层的节点数为2^depth
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
         if not root:
-            return None
-        q = [root]
-        while q:
-            tmp = []
-            for i in range(len(q)):
-                if q[i].left:
-                    tmp.append(q[i].left)
-                if q[i].right:
-                    tmp.append(q[i].right)
-                if i == len(q)-1:   # 每层最后一个节点
-                    q[i].next = None
-                else:               # 其他节点
-                    q[i].next = q[i+1]
-            q = tmp
+            return root
+
+        if root.left:
+            root.left.next = root.right
+            root.right.next = root.next.left if root.next else None
+
+            self.connect(root.left)
+            self.connect(root.right)
 
         return root
