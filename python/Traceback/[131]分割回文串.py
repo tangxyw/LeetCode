@@ -1,30 +1,32 @@
 from typing import List
 
+
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
         self.res = []
         track = []
+        n = len(s)
 
-        # 深度优先遍历+剪枝+回溯
-        def traceback(s, track):
-            if len(s) == 0:  # s为空字符串, 已经分割完毕,到达最底层
-                self.res.append(track[:])  # 注意是track的拷贝
+        def traceback(index: int, track: List[str]):
+            # index为当前递归起始字符索引
+            if index == n:  # 遍历完最后一个字符
+                self.res.append(track[:])
                 return
-            for i in range(1, len(s) + 1):  # 遍历每一种分割方法
-                if isSymmetry(s[:i]):  # 判断前缀字符串s[:i]是一个回文字符串, 如果不是就剪枝
-                    track.append(s[:i])  # 将s[:i]加入track
-                    traceback(s[i:], track)  # 向下一层递归, 字符串变为余下的后缀字符串
+
+            for i in range(index, n):  # 遍历每一种分割方法
+                if issymmetry(index, i):  # 只考虑回文串, 其他情况剪枝
+                    track.append(s[index:i + 1])
+                    traceback(i + 1, track)  # 向后一个字符递归
                     track.pop()  # 回溯
 
-        def isSymmetry(s: str) -> bool:
-            left, right = 0, len(s) - 1
-            while (left < right):
-                if s[left] == s[right]:
-                    left += 1
-                    right -= 1
-                else:
+        def issymmetry(left: int, right: int) -> bool:
+            while left < right:
+                if s[left] != s[right]:
                     return False
+                left += 1
+                right -= 1
+
             return True
 
-        traceback(s, track)
+        traceback(0, track)
         return self.res
