@@ -1,4 +1,4 @@
-import java.BinaryTree.TreeNode;
+import BinaryTree.TreeNode;
 
 class Solution {
     private int[] preorder;

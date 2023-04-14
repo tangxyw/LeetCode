@@ -1,4 +1,4 @@
-import java.BinaryTree.TreeNode;
+import BinaryTree.TreeNode;
 
 class Solution {
     public int maxDepth(TreeNode root) {
