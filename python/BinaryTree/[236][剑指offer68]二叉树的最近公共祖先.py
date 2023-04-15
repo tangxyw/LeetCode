@@ -13,9 +13,7 @@ class Solution:
         # 在左右子树中递归
         left = self.lowestCommonAncestor(root.left, p, q)
         right = self.lowestCommonAncestor(root.right, p, q)
-        if not left:  # 左子树递归结果为空, 说明p和q都不在左子树内, 此时返回右子树递归结果
-            return right
-        if not right:  # 反之, 返回左子树递归结果
-            return left
-        if left and right:  # 若p和q分别在左右子树内, 则当前节点为最近公共祖先(由后序遍历保证)
-            return root
+
+        if not left or not right:  # 左子树递归结果为空, 说明p和q都不在左子树内, 此时返回右子树递归结果, 反之, 返回左子树递归结果
+            return left if left else right
+        return root  # 若p和q分别在左右子树内, 则当前节点为最近公共祖先(由后序遍历保证)
