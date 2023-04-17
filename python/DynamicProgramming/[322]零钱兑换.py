@@ -85,8 +85,8 @@ class Solution(object):
         dp[0] = 0
         for n in range(1, amount+1):  # 从第1项开始递推dp table
             for coin in coins:  # 遍历每一种硬币
-                if n < coin: continue  # 如果问题规模小于当前硬币面值, 进入下一轮循环
-                else: dp[n] = min(dp[n], dp[n-coin]+1)  # dp状态转移方程
+                if n >= coin:
+                    dp[n] = min(dp[n], dp[n-coin]+1)  # dp状态转移方程
         if dp[amount] == float('inf'):
             return -1
         else:
