@@ -3,22 +3,30 @@ from typing import List
 
 class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
-        # dfs+回溯+剪枝
+        nums.sort()  # 预先排序
         n = len(nums)
-        nums.sort()  # 预先升序排序
-        track = []
         res = []
+        visited = [False] * n  # 记录每个num是否在track里
+        track = []
 
-        def traceback(nums, track):
-            if len(track) == n:  # 到底了, 返回结果
+        def traceback(depth: int, track: List[int]) -> None:
+            if depth == n:  # 深度到n的时候正好为一个排列
                 res.append(track[:])
                 return
 
-            for i in range(len(nums)):
-                if i == 0 or (i > 0 and nums[i] > nums[i - 1]):  # 重复值连续, 只取第一个, 后面的被剪枝
-                    track.append(nums[i])
-                    traceback(nums[:i] + nums[i + 1:], track)  # 扣掉nums[i], 向下递归
-                    track.pop()  # 回溯
+            for i in range(n):
+                # 剪枝条件
+                # 1. 当前位置的数字已经在track里
+                # or
+                # 2. 当前数字与前一个数字一样, 且前一个数字没有在track里
+                if visited[i] or (i > 0 and nums[i - 1] == nums[i] and not visited[i - 1]):
+                    continue
+                visited[i] = True  # 已使用标记
+                track.append(nums[i])
+                traceback(depth + 1, track)  # 向下递归
+                track.pop()  # 回溯
+                visited[i] = False  # 标记回溯
 
-        traceback(nums, track)
+        traceback(0, track)
+
         return res
