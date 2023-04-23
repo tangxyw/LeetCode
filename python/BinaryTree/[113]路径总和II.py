@@ -11,19 +11,15 @@ class Solution:
             if not root:
                 return
 
+            track.append(root.val)  # 加入到track的元素是固定, 故可以放到循环外面
             # 到达叶节点, 且当前值等于叶节点值时, 这是一条合法路径
             if not root.left and not root.right and root.val == cur_targetSum:
-                self.res.append(track + [root.val])
-                return
+                self.res.append(track[:])
 
-            if root.left:  # 若左子树存在, 在左子树上递归+回溯
-                track.append(root.val)
-                traceback(root.left, track, cur_targetSum - root.val)
-                track.pop()
-            if root.right:  # 若右子树存在, 在右子树上递归+回溯
-                track.append(root.val)
-                traceback(root.right, track, cur_targetSum - root.val)
-                track.pop()
+            for node in [root.left, root.right]:
+                traceback(node, track, cur_targetSum - root.val)
+
+            track.pop()  # 在循环体外pop一次即可
 
         traceback(root, track, targetSum)
         return self.res
