@@ -20,6 +20,9 @@ class Solution:
 
         # 行索引为上面迭代后的bottom值
         row = bottom
+        if row < 0:  # bottom为-1, 说明target比matrix[0][0]还小
+            return False
+
         # 所有行的第一个元素都不是target
         left = 1
         right = len(matrix[0]) - 1
