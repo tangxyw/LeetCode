@@ -11,16 +11,16 @@ class Solution:
         self.res = []
         track = []
 
-        def traceback(nums, track):
+        def traceback(index, track):
             # 每个节点都是一个子集
             self.res.append(track[:])
 
-            for i, num in enumerate(nums):
+            for i in range(index, n):
                 # 除第一个出现的数字外, 后面的重复数字被剪枝
-                if i == 0 or nums[i] != nums[i - 1]:
-                    track.append(num)
-                    traceback(nums[i + 1:], track)
+                if i == index or nums[i] != nums[i - 1]:
+                    track.append(nums[i])
+                    traceback(i+1, track)
                     track.pop()
 
-        traceback(nums, track)
+        traceback(0, track)
         return self.res
