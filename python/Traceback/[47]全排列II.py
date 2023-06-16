@@ -18,7 +18,7 @@ class Solution:
                 # 剪枝条件
                 # 1. 当前位置的数字已经在track里
                 # or
-                # 2. 当前数字与前一个数字一样, 且前一个数字没有在track里
+                # 2. 当前数字与前一个数字一样, 且前一个数字没有在track里(前一个数字没使用, 也不会使用当前的, 避免重复)
                 if visited[i] or (i > 0 and nums[i - 1] == nums[i] and not visited[i - 1]):
                     continue
                 visited[i] = True  # 已使用标记
