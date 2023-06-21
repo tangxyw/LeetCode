@@ -3,6 +3,7 @@ from CreateTree import TreeNode
 
 class Solution:
     def isSubStructure(self, A: TreeNode, B: TreeNode) -> bool:
+        # 注意此题与 572.另一个树的子树 的区别, 一个是子树, 一个是子结构
         if not A or not B:  # A为空表示到底了也没找到相同子结构, 返回False; B为空根据题意返回False
             return False
         # 当以A为根节点的子树包含结构B 或 以A的左子树为根节点的子树包含结构B 或 以A的右子树为根节点的子树包含结构B → A包含结构B
