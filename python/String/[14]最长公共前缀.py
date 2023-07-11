@@ -9,10 +9,8 @@ class Solution:
         for i in range(1, len(strs)):
             j = 0
             # 遍历字符串中每一个字符, 遍历长度为当前res和当前字符串中较短的
-            while j < min(len(res), len(strs[i])):
+            while j < min(len(res), len(strs[i])) and res[j] == strs[i][j]:
                 # 逐字符相比, 直到找到不一样的
-                if res[j] != strs[i][j]:
-                    break
                 j += 1
             # 每遍历一个字符串, 就更新res
             res = res[:j]
