@@ -1,23 +1,32 @@
 from .CreateTree import TreeNode
-from typing import List
+from typing import List, Optional
 
 
 class Solution:
-    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
-        if not inorder or not postorder:  # 消费完中序和后序列表, 递归完成
-            return
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        def helper(inorder_start: int, inorder_end: int, postorder_start: int, postorder_end: int) -> Optional[TreeNode]:
+            if inorder_start > inorder_end or postorder_start > postorder_end:
+                return None
 
-        root_val = postorder[-1]  # 后序遍历列表的最后一个元素是当前根节点的值
-        root_idx = inorder.index(root_val)  # 根节点值在中序遍历列表的索引, 注意这个索引值相当于当前左子树的节点数量
+            root_val = postorder[postorder_end]
+            root_index = inorder.index(root_val)
+            root = TreeNode(root_val)
 
-        inorder_left = inorder[:root_idx]  # 左子树的中序遍历列表
-        inorder_right = inorder[root_idx + 1:]  # 右子树的中序遍历列表
+            # 左子树
+            left_inorder_start = inorder_start
+            left_inorder_end = root_index - 1
+            left_postorder_start = postorder_start
+            left_postorder_end = left_postorder_start + left_inorder_end - left_inorder_start
 
-        postorder_left = postorder[:root_idx]  # 左子树的后序遍历列表(利用root_idx的性质)
-        postorder_right = postorder[root_idx:-1]  # 右子树的后序遍历列表
+            # 右子树
+            right_inorder_start = root_index + 1
+            right_inorder_end = inorder_end
+            right_postorder_start = left_postorder_end + 1
+            right_postorder_end = postorder_end - 1
 
-        root = TreeNode(root_val)
-        root.left = self.buildTree(inorder_left, postorder_left)
-        root.right = self.buildTree(inorder_right, postorder_right)
+            root.left = helper(left_inorder_start, left_inorder_end, left_postorder_start, left_postorder_end)
+            root.right = helper(right_inorder_start, right_inorder_end, right_postorder_start, right_postorder_end)
 
-        return root
+            return root
+
+        return helper(0, len(inorder) - 1, 0, len(postorder) - 1)
