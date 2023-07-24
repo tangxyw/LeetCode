@@ -9,9 +9,9 @@ class Solution:
         i = 0  # 起点初始值
         while i < n:  # 遍历每一个位置作为起点
             j = i  # j为i能够到达的最远位置
-            remain = gas[i]  # 在位置i加油
-            while remain - cost[j] >= 0:  # 判断能够前往下一个位置
-                remain += gas[(j + 1) % n] - cost[j]  # 在下一个位置加油, 继续向前, 更新remain
+            remains = 0  # 剩余油量
+            while remains + gas[j] - cost[j] >= 0:  # 判断能够前往下一个位置
+                remains += gas[j] - cost[j]  # 在下一个位置加油, 并继续向前, 更新remain
                 j = (j + 1) % n  # 环形道路, j可能跑到i前面
                 if i == j:  # j回到了i, 直接返回位置i
                     return i
