@@ -3,21 +3,23 @@ from typing import List
 
 class Solution:
     def isStraight(self, nums: List[int]) -> bool:
-        # 牌中的最大最小值
-        min_num = 14
-        max_num = 0
-        # 记录牌中出现的数字
-        repeat = set()
+        # 顺子条件
+        # 1. 最大排面 - 最小排面 < 5
+        # 2. 除了大小王(0)外不能有重复值
+
+        s = set()
+        max_val = 0  # 最大牌面
+        min_val = 14  # 最小牌面
 
         for num in nums:
-            if num > 0:  # 只考虑不是大小王的牌
-                # 更新牌的最大值最小值
-                min_num = min(num, min_num)
-                max_num = max(num, max_num)
-                if max_num - min_num >= 5:  # 最大值-最小值>=5, 不可能组成顺子
-                    return False
-                if num in repeat:  # 牌已经出现过
-                    return False
-                repeat.add(num)
+            if num == 0:    # 不考虑大小王
+                continue
+            if num in s:    # 有重复牌必然不是顺子
+                return False
+            # 更新最大最小牌面
+            max_val = max(max_val, num)
+            min_val = min(min_val, num)
+            s.add(num)
 
-        return True
+        # 最大排面 - 最小排面 < 5才是顺子
+        return max_val - min_val < 5
