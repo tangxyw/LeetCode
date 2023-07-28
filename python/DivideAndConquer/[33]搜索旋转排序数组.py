@@ -8,17 +8,17 @@ class Solution:
 
         while left <= right:
             mid = left + (right - left) // 2
-            if nums[mid] == target:
+            if nums[0] == target:
                 return mid
-            if nums[left] <= nums[mid]:  # 左侧是有序的(注意这里要加=, 因为mid是中间靠左的)
-                if nums[left] <= target < nums[mid]:  # target在有序的片段里
+            if nums[0] <= nums[mid]:  # mid位置在原始数组“左侧”部分
+                if nums[0] <= target < nums[mid]:  # target也在这一部分
                     right = mid - 1
-                else:  # target不在有序的片段里
+                else:  # # target也在这一部分
                     left = mid + 1
-            else:  # 左侧是无序的, 右侧必是有序的
-                if nums[mid] < target <= nums[right]:  # target在有序的片段里
+            else:  # mid位置在原始数组“右侧”部分
+                if nums[mid] < target <= nums[len(nums)-1]:  # # target也在这一部分
                     left = mid + 1
-                else:  # target不在有序的片段里
+                else:  # # target也在这一部分
                     right = mid - 1
 
         return -1
