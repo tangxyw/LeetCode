@@ -3,7 +3,7 @@ from CreateTree import TreeNode
 
 class Solution:
     def isBalanced(self, root: TreeNode) -> bool:
-        def helper(root: TreeNode):
+        def helper(root: TreeNode) -> (bool, int):
             """返回以节点为根节点的子树是否为高度平衡树, 和当前子树深度"""
             # base case
             if not root:
